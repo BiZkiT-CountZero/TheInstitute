@@ -1,0 +1,33 @@
+package com.gmail.bizkit245;
+
+public class Main {
+	public static void main(String[] args) {
+
+		Group group = new Group();
+
+		Student st1 = new Student("John", "Smith", 18, true, 21, "IT");
+		Student st2 = new Student("Ozzy", "Osborne", 19, true, 17, "IT");
+		Student st3 = new Student("Carl", "Cox", 18, true, 22, "IT");
+		Student st4 = new Student("Marika", "Rossa", 19, false, 15, "IT");
+
+		try {
+			group.addStudent(st1);
+			group.addStudent(st2);
+			group.addStudent(st3);
+			group.addStudent(st4);
+
+		} catch (MyException e) {
+
+			System.out.println(e.getMessage());
+		}
+
+		System.out.println(group);
+
+		group.deleteStudent(6);
+
+		System.out.println(group);
+
+		System.out.println(group.search("Cox"));
+	}
+
+}
