@@ -59,7 +59,7 @@ public class Group {
 		if (a == null && b == null) {
 			return 0;
 		}
-		return b.getLastname().compareTo(a.getLastname());
+		return a.getLastname().compareTo(b.getLastname());
 
 	}
 
