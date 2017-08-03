@@ -1,0 +1,8 @@
+package com.gmail.bizkit245;
+
+public interface GroupSaveLoad {
+
+	public void saveGroup(Group group);
+
+	public Group loadGroup();
+}
