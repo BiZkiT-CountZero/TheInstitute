@@ -1,0 +1,67 @@
+package com.gmail.bizkit245;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+public class GroupSaLo implements GroupSaveLoad {
+
+	private String fileadress;
+
+	public GroupSaLo(String fileadress) {
+		super();
+		this.fileadress = fileadress;
+	}
+
+	public GroupSaLo() {
+		super();
+	}
+
+	public String getFileadress() {
+		return fileadress;
+	}
+
+	public void setFileadress(String fileadress) {
+		this.fileadress = fileadress;
+	}
+
+	@Override
+	public void saveGroup(Group group) {
+		try (PrintWriter pw = new PrintWriter(this.fileadress)) {
+			for (Student student : group.getStudentArray()) {
+				if (student != null) {
+					pw.println(student.getName() + "\t" + student.getLastname() + "\t" + student.getAge() + "\t"
+							+ student.isSex() + "\t" + student.getRecordBook() + "\t" + student.getGroup());
+				}
+			}
+		} catch (IOException e) {
+			System.out.println(e);
+		}
+	}
+
+	@Override
+	public Group loadGroup() {
+		Group groupX = new Group();
+		try (BufferedReader br = new BufferedReader(new FileReader(this.fileadress))) {
+			String text = "";
+			for (; (text = br.readLine()) != null;) {
+				String[] studentData = text.split("\t");
+				String name = studentData[0];
+				String lastname = studentData[1];
+				int age = Integer.valueOf(studentData[2]);
+				boolean sex = (studentData[3].equals("true"));
+				long recordBook = Long.valueOf(studentData[4]);
+				String group = studentData[5];
+				Student student = new Student(name, lastname, age, sex, recordBook, group);
+				groupX.addStudent(student);
+
+			}
+		} catch (IOException | MyException e) {
+			System.out.println(e);
+		}
+		return groupX;
+	}
+
+
+}
