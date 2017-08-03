@@ -1,21 +1,22 @@
-package com.gmail.bizkit245;
+ackage com.gmail.bizkit245;
 
 public class Main {
 	public static void main(String[] args) {
 
 		Group group = new Group();
 
-		Student st1 = new Student("John", "Smith", 18, true, 21, "IT");
-		Student st2 = new Student("Ozzy", "Osborne", 19, true, 17, "IT");
-		Student st3 = new Student("Carl", "Cox", 18, true, 22, "IT");
-		Student st4 = new Student("Marika", "Rossa", 19, false, 15, "IT");
-
 		try {
+			Student st = new Student();
+			Student st1 = new Student("John", "Smith", 18, true, 21, "IT");
+			Student st2 = new Student("Ozzy", "Osborne", 19, true, 17, "IT");
+			Student st3 = new Student("Carl", "Cox", 18, true, 22, "IT");
+			Student st4 = new Student("Marika", "Rossa", 19, false, 15, "IT");
+
 			group.addStudent(st1);
 			group.addStudent(st2);
 			group.addStudent(st3);
 			group.addStudent(st4);
-
+			group.creatStudent();
 		} catch (MyException e) {
 
 			System.out.println(e.getMessage());
@@ -23,11 +24,21 @@ public class Main {
 
 		System.out.println(group);
 
-		group.deleteStudent(6);
+		// group.deleteStudent(6);
+		//
+		// System.out.println(group);
 
+		// System.out.println(group.search("Cox"));
+		
+		group.sortByParametr(1);
 		System.out.println(group);
+	
 
-		System.out.println(group.search("Cox"));
+		group.saveGroup(new GroupSaLo("group.txt"));
+
+		Group groupTwo = Group.loadGroup(new GroupSaLo("group.txt"));
+		System.out.println(groupTwo);
+
 	}
 
 }
