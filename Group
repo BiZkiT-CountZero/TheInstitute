@@ -1,0 +1,238 @@
+package com.gmail.bizkit245;
+
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Group implements Military {
+	private Student[] studentArray = new Student[10];
+
+	public Group() {
+		super();
+	}
+
+	public void creatStudent() throws MyException {
+
+		Student student = null;
+
+		try {
+			String name = getName("");
+			String lastname = getLastName("");
+			int age = getAge();
+			boolean sex = getSex("");
+			long recordBook = getRecordBook("");
+			String group = getGroupName("Input group name: ");
+			Student st = new Student(name, lastname, age, sex, recordBook, group);
+			this.addStudent(st);
+		} catch (NullPointerException e) {
+			System.out.println("Abort");
+			return;
+		}
+	}
+
+	public void addStudent(Student student) throws MyException {
+		if (student == null) {
+			throw new IllegalArgumentException("Empty field");
+		}
+		for (int i = 0; i < studentArray.length; i++) {
+			if (studentArray[i] == null) {
+				studentArray[i] = student;
+				return;
+			}
+		}
+		throw new MyException();
+	}
+
+	public Student search(String lastName) {
+		for (Student student : studentArray) {
+			if (student != null && student.getLastname().equals(lastName)) {
+				return student;
+			}
+		}
+		return null;
+	}
+
+	public void deleteStudent(int p) {
+		if (!(p >= 0 && p < studentArray.length)) {
+			System.out.println("Incorrect index");
+			return;
+		}
+		studentArray[p] = null;
+	}
+
+	private void sort() {
+		for (int i = 0; i < studentArray.length - 1; i++) {
+			for (int j = i + 1; j < studentArray.length; j++) {
+				if (sortStudent(studentArray[i], studentArray[j]) > 0) {
+					Student temp = studentArray[i];
+					studentArray[i] = studentArray[j];
+					studentArray[j] = temp;
+				}
+			}
+		}
+	}
+
+	private int sortStudent(Student a, Student b) {
+		if (a != null && b == null) {
+			return 1;
+		}
+		if (a == null && b != null) {
+			return -1;
+		}
+		if (a == null && b == null) {
+			return 0;
+		}
+		return a.getLastname().compareTo(b.getLastname());
+
+	}
+
+	public void sortByParametr(int i) {
+		Arrays.sort(this.studentArray, new StudentComparator(i));
+	}
+
+	public void sortByParametr(int i, boolean forward) {
+		Arrays.sort(this.studentArray, new StudentComparator(i, forward));
+	}
+
+	private String getName(String n) throws NullPointerException {
+		Scanner sc = new Scanner(System.in);
+		boolean done = false;
+		String name = " ";
+		for (; !done;) {
+			try {
+				System.out.print("Input student name: ");
+				name = sc.nextLine();
+				done = true;
+			} catch (NumberFormatException e) {
+				System.out.println("Invalid format");
+			}
+		}
+		return name;
+	}
+
+	private String getLastName(String l) throws NullPointerException {
+		Scanner sc = new Scanner(System.in);
+		boolean done = false;
+		String lastName = " ";
+		for (; !done;) {
+			try {
+				System.out.print("Input student lastname: ");
+				lastName = sc.nextLine();
+				done = true;
+			} catch (NumberFormatException e) {
+				System.out.println("Invalid format");
+			}
+		}
+		return lastName;
+	}
+
+	private int getAge() throws NullPointerException {
+		Scanner sc = new Scanner(System.in);
+		boolean done = false;
+		int age = 0;
+		for (; !done;) {
+			try {
+				System.out.print("Input student age: ");
+				age = sc.nextInt();
+				done = true;
+			} catch (NumberFormatException e) {
+				System.out.println("Invalid ");
+			}
+		}
+		return age;
+	}
+
+	private boolean getSex(String s) throws NullPointerException {
+		Scanner sc = new Scanner(System.in);
+		boolean done = false;
+		boolean gender = false;
+		for (; !done;) {
+			try {
+				System.out.print("Input gender (man / women): ");
+				gender = sc.nextLine().equals("man");
+				done = true;
+			} catch (NumberFormatException e) {
+				System.out.println("Invalid format");
+			}
+		}
+		return gender;
+	}
+
+	private long getRecordBook(String message) throws NullPointerException {
+		Scanner sc = new Scanner(System.in);
+		boolean done = false;
+		long mark = 0;
+		for (; !done;) {
+			try {
+				System.out.print("Input recordBook: ");
+				mark = sc.nextLong();
+				done = true;
+			} catch (NumberFormatException e) {
+				System.out.println("Invalid format");
+			}
+		}
+		return mark;
+	}
+
+	private String getGroupName(String g) throws NullPointerException {
+		Scanner sc = new Scanner(System.in);
+		boolean done = false;
+		String groupName = "";
+		for (; !done;) {
+			try {
+				System.out.print("Input group name: ");
+				groupName = sc.nextLine();
+				done = true;
+			} catch (NumberFormatException e) {
+				System.out.println("Invalid format");
+			}
+		}
+		return groupName;
+	}
+
+	public Student[] getStudentArray() {
+		Student[] temp = new Student[this.studentArray.length];
+		System.arraycopy(studentArray, 0, temp, 0, temp.length);
+		return temp;
+	}
+
+	public void saveGroup(GroupSaveLoad gropudao) {
+		gropudao.saveGroup(this);
+	}
+
+	public static Group loadGroup(GroupSaveLoad gropudao) {
+		return gropudao.loadGroup();
+	}
+
+	@Override
+	public Student[] joinTheArmy() {
+		int m = 0;
+		for (Student student : studentArray) {
+			if (student != null && student.isSex() && student.getAge() >= 18) {
+				m += 1;
+			}
+		}
+		Student[] studentArray = new Student[m];
+		int i = 0;
+		for (Student student : studentArray) {
+			if (student != null && student.isSex() && student.getAge() >= 18) {
+				studentArray[i++] = student;
+			}
+		}
+		return studentArray;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		int i = 0;
+		// sort();
+		for (Student student : studentArray) {
+			if (student != null) {
+				sb.append((++i) + ") ").append(student);
+				sb.append(System.lineSeparator());
+			}
+		}
+		return sb.toString();
+	}
+
+}
