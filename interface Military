@@ -1,0 +1,5 @@
+package com.gmail.bizkit245;
+
+public interface Military {
+	public Student [] joinTheArmy();
+}
